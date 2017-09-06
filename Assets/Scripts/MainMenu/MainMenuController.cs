@@ -17,7 +17,7 @@ namespace Puzzle.MainMenu
 		[SerializeField] private Button CreateButton;
 		[SerializeField] private Button OptionButton;
 
-		private GameSystem GameSystem { get { return GameSystem.Instance(); } }
+		private GameSystem GameSystem { get { return GameSystem.Instance; } }
 
 		void Start() {
 			StageButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnStage());

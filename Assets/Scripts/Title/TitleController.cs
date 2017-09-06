@@ -14,7 +14,7 @@ namespace Puzzle.Title
 	{
 		[SerializeField] private TitleView View;
 
-		private GameSystem GameSystem { get { return GameSystem.Instance(); } }
+		private GameSystem GameSystem { get { return GameSystem.Instance; } }
 
 		void Start()
 		{
