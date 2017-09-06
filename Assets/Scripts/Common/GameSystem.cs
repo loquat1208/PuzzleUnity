@@ -19,7 +19,9 @@ namespace Puzzle.System {
 		private GameModel _gameModel;
 		private GameObject _gameModelObject;
 		private MessageService _messageService;
+		private SceneController _scene_controller;
 
+		public SceneController Scene { get { return _scene_controller; } }
 		public MessageService Message { get { return _messageService; } }
 
 		private void Start()
@@ -39,6 +41,9 @@ namespace Puzzle.System {
 			if (!_messageService) {
 				_messageService = gameObject.AddComponent<MessageService> ();
 			}
+				
+			if (!_scene_controller)
+				_scene_controller = gameObject.AddComponent<SceneController> ();
 		}
 	}
 }

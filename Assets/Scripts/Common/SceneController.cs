@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Puzzle.Game {
+namespace Puzzle.System {
 	public class SceneController : MonoBehaviour {
 		
 		public void LoadScene( string sceneName )

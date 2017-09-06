@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle.Game;
+using Puzzle.System;
 
 using UniRx;
 
@@ -10,11 +10,11 @@ namespace Puzzle.Title {
 	public class TitleController : MonoBehaviour {
 		[SerializeField] private TitleView View;
 
-		private GameModel GameModel { get { return GameModel.Instance(); } }
+		private GameSystem GameSystem { get { return GameSystem.Instance(); } }
 
 		void Start ()
 		{
-			View.OnTap.Subscribe (_ => GameModel.Scene.LoadScene ("MainMenu"));
+			View.OnTap.Subscribe (_ => GameSystem.Scene.LoadScene ("MainMenu"));
 		}
 	}
 }

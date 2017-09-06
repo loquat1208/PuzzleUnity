@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Puzzle.System;
-using Puzzle.Game;
 
 using UniRx;
 
@@ -16,7 +15,6 @@ namespace Puzzle.MainMenu
 		[SerializeField] private Button CreateButton;
 		[SerializeField] private Button OptionButton;
 
-		private GameModel GameModel { get { return GameModel.Instance (); } }
 		private GameSystem GameSystem { get { return GameSystem.Instance (); } }
 
 		void Start() {
@@ -28,7 +26,7 @@ namespace Puzzle.MainMenu
 	
 		void OnStage()
 		{
-			GameModel.Scene.LoadScene ("Stage");
+			GameSystem.Scene.LoadScene ("Stage");
 		}
 
 		void OnShop()
