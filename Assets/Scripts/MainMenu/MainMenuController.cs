@@ -11,6 +11,7 @@ namespace Puzzle.MainMenu
 {
 	public class MainMenuController : MonoBehaviour
 	{
+		// 사실은 버튼은 View를 만들어 관리하는게 좋음
 		[SerializeField] private Button StageButton;
 		[SerializeField] private Button ShopButton;
 		[SerializeField] private Button CreateButton;
