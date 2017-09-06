@@ -4,12 +4,14 @@ using UnityEngine;
 
 using Puzzle.Game;
 
-namespace Puzzle.System {
-	public class GameSystem : MonoBehaviour {
+namespace Puzzle.System
+{
+	public class GameSystem : MonoBehaviour
+	{
 		private static GameSystem _instance;
-		public static GameSystem Instance()  
+		public static GameSystem Instance()
 		{  
-			if( !_instance )  
+			if (!_instance)
 			{  
 				_instance = GameObject.FindObjectOfType(typeof(GameSystem)) as GameSystem;   
 			}  
@@ -26,24 +28,28 @@ namespace Puzzle.System {
 
 		private void Start()
 		{
-			DontDestroyOnLoad (this);
-			Init ();
+			DontDestroyOnLoad(this);
+			Init();
 		}
 
 		private void Init()
 		{
-			if (!_gameModel) {
-				_gameModelObject = new GameObject ();
+			if (!_gameModel)
+			{
+				_gameModelObject = new GameObject();
 				_gameModelObject.name = "GameModel";
-				_gameModel = _gameModelObject.AddComponent<GameModel> ();
+				_gameModel = _gameModelObject.AddComponent<GameModel>();
 			}
 
-			if (!_messageService) {
-				_messageService = gameObject.AddComponent<MessageService> ();
+			if (!_messageService)
+			{
+				_messageService = gameObject.AddComponent<MessageService>();
 			}
 				
 			if (!_scene_controller)
-				_scene_controller = gameObject.AddComponent<SceneController> ();
+			{
+				_scene_controller = gameObject.AddComponent<SceneController>();
+			}
 		}
 	}
 }
