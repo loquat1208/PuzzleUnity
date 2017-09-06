@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle.Game;
+// System안에 있는 함수를 사용하기 위해 선언
+using Puzzle.System;
 
 using UniRx;
 
-namespace Puzzle.Title {
-	public class TitleController : MonoBehaviour {
+namespace Puzzle.Title
+{
+	// Controller는 View, Model부터 데이터를 받아 수정, 전달
+	public class TitleController : MonoBehaviour
+	{
 		[SerializeField] private TitleView View;
 
-		private GameModel GameModel { get { return GameModel.Instance(); } }
+		private GameSystem GameSystem { get { return GameSystem.Instance(); } }
 
-		void Start ()
+		void Start()
 		{
-			View.OnTap.Subscribe (_ => GameModel.Scene.LoadScene ("MainMenu"));
+			View.OnTap.Subscribe(_ => GameSystem.Scene.LoadScene("MainMenu"));
 		}
 	}
 }
