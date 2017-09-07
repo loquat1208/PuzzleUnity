@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle.Game;
-
 namespace Puzzle.System
 {
 	public class GameSystem : MonoBehaviour
@@ -27,25 +25,21 @@ namespace Puzzle.System
         public SceneController Scene { get; private set; }
         public MessageService Message { get; private set; }
 
-        private GameModel _gameModel;
-        private GameObject _gameModelObject;
-
 		private void Start()
 		{
+            if (Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+
             Screen.SetResolution(Screen.width, Screen.width * HEIGHT_RATIO / WIDTH_RATIO, false);
-			DontDestroyOnLoad(this);
 			Init();
+			DontDestroyOnLoad(this);
 		}
 
 		private void Init()
 		{
-            if (!_gameModel)
-			{
-				_gameModelObject = new GameObject();
-                _gameModelObject.name = "GameModel";
-                _gameModel = _gameModelObject.AddComponent<GameModel>();
-			}
-
             if (!Message)
 			{
                 Message = gameObject.AddComponent<MessageService>();

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Puzzle.Stage
 {
-    public class LevelController : MonoBehaviour
+    public class LevelModel
     {
-
+        public int Index { get; set; }
     }
 }

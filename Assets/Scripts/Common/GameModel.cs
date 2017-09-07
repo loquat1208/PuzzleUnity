@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Puzzle.Stage;
+
 namespace Puzzle.Game
 {
 	public class GameModel : MonoBehaviour
@@ -19,18 +21,28 @@ namespace Puzzle.Game
             }
         }
 
-        public int Stage { get; set; }
-        public int Level { get; set; }
+        public List<StageModel> Stages { get; private set; }
+        public int MaxStage = 0;
 
         private void Start()
         {
             Init();
-            DontDestroyOnLoad(this);
         }
 
         private void Init()
         {
-            Stage = 2;
+            if (Stages == null)
+            {
+                MaxStage = 1;
+                Stages = new List<StageModel>();
+                for (int i = 0; i < MaxStage; i++)
+                {
+                    StageModel stage = new StageModel();
+                    stage.MaxLevel = 1;
+                    stage.Index = i + 1;
+                    Stages.Add(stage);
+                }
+            }
         }
-	}
+    }
 }
