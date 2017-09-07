@@ -1,0 +1,23 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using Puzzle.Game;
+
+using UniRx;
+
+namespace Puzzle.Play
+{
+    public class PlayController : MonoBehaviour
+    {
+        [SerializeField] private PlayView view;
+
+        private GameModel GameModel { get { return GameModel.Instance; } }
+
+        void Start()
+        {
+            view.LevelText.TakeUntilDestroy(this).Subscribe( x => x.text = string.Format("Level {0}", GameModel.Level));
+            view.StageText.TakeUntilDestroy(this).Subscribe( x => x.text = string.Format("Stage {0}", GameModel.Stage));
+        }
+    }
+}
