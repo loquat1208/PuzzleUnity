@@ -16,8 +16,10 @@ namespace Puzzle.Play
 
         void Start()
         {
-            view.StageText.TakeUntilDestroy(this).Subscribe( x => x.text = string.Format("Stage {0}", GameModel.Stages[0].Index));
-            view.LevelText.TakeUntilDestroy(this).Subscribe( x => x.text = string.Format("Level {0}", GameModel.Stages[0].Levels[0].Index));
+			view.StageText.TakeUntilDestroy(this)
+				.Subscribe( x => x.text = string.Format("Stage {0}", GameModel.Stages[GameModel.CurrentStage].Index));
+			view.LevelText.TakeUntilDestroy(this)
+				.Subscribe( x => x.text = string.Format("Level {0}", GameModel.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel].Index));
         }
     }
 }

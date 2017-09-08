@@ -14,12 +14,12 @@ namespace Puzzle.Stage
    
         public StageModel Stage { get { return _stage; } }
         public int Index = 1;
-        public int MaxLevel = 1;
+		public List<LevelModel> Levels = new List<LevelModel>();
 
         private void Start()
         {
             _stage.Index = Index;
-            _stage.MaxLevel = MaxLevel;
+			_stage.MaxLevel = Levels.Count;
         }
     }
 }

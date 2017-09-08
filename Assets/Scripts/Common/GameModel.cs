@@ -21,8 +21,11 @@ namespace Puzzle.Game
             }
         }
 
+		// TODO: 나중에 따로 저장하는 클래스, 서버 제작
         public List<StageModel> Stages { get; private set; }
-        public int MaxStage = 0;
+		public int CurrentStage { get; set; }
+		public int CurrentLevel { get; set; }
+		public int MaxStage { get; set; }
 
         private void Start()
         {
@@ -31,9 +34,12 @@ namespace Puzzle.Game
 
         private void Init()
         {
+			// Dummy Data
             if (Stages == null)
             {
                 MaxStage = 1;
+				CurrentStage = 0;
+				CurrentLevel = 0;
                 Stages = new List<StageModel>();
                 for (int i = 0; i < MaxStage; i++)
                 {

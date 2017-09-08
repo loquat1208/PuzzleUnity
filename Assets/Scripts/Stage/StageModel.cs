@@ -30,6 +30,7 @@ namespace Puzzle.Stage
                 {
                     LevelModel level = new LevelModel();
                     level.Index = i + 1;
+					level.Grid = new Vector2 (5, 8);
                     _levels.Add(level);
                 }
                 return _levels;
