@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TilesModel : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace Puzzle.Play
+{
+    public class TilesModel
+    {
+        public const int HERIZONTAL_NUM = 7;
+        public const int VERTICAL_NUM = 9;
+    }
 }

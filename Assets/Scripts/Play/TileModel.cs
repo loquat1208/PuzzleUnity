@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileModel {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace Puzzle.Play
+{
+    public class TileModel
+    {
+        public enum TYPE
+        {
+            A = 0,
+            B = 1,
+            C = 2,
+            D = 3,
+            TYPE_MAX = 4,
+        }
+        public const int TILE_SIZE = 100;
+    }
 }
