@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using UniRx;
+
 using Puzzle.Game;
 
 namespace Puzzle.Play
@@ -19,6 +21,22 @@ namespace Puzzle.Play
         private void Start()
         {
             Init();
+            _tiles.ForEach(x =>
+            {
+                x.Tile.OnClickAsObservable().TakeUntilDestroy(this)
+                      .Subscribe(_ =>
+                      {
+                          if (x.Status == TileModel.STATUS.NORMAL)
+                          {
+                              x.Status = TileModel.STATUS.SELECTED;
+                              x.Draw();
+                              return;
+                          }
+                          x.Status = TileModel.STATUS.NORMAL;
+                          x.NextType();
+                          x.Draw();
+                      });
+            });
         }
 
         private void Init()

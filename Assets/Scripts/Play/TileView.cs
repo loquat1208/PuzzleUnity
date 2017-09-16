@@ -13,10 +13,11 @@ namespace Puzzle.Play
         [SerializeField] private Sprite CSprite;
         [SerializeField] private Sprite DSprite;
 
-        public Image Image;
         public Button Tile;
 
         public TileModel.TYPE Type { get; set; }
+        public TileModel.STATUS Status { get; set; }
+
         public void NextType()
         {
             Type++;
@@ -31,16 +32,26 @@ namespace Puzzle.Play
             switch(Type)
             {
                 case TileModel.TYPE.A:
-                    Image.sprite = ASprite;
+                    Tile.image.sprite = ASprite;
                     break;
                 case TileModel.TYPE.B:
-                    Image.sprite = BSprite;
+                    Tile.image.sprite = BSprite;
                     break;
                 case TileModel.TYPE.C:
-                    Image.sprite = CSprite;
+                    Tile.image.sprite = CSprite;
                     break;
                 case TileModel.TYPE.D:
-                    Image.sprite = DSprite;
+                    Tile.image.sprite = DSprite;
+                    break;
+            }
+
+            switch (Status)
+            {
+                case TileModel.STATUS.NORMAL:
+                    Tile.transform.localScale = Vector3.one;
+                    break;
+                case TileModel.STATUS.SELECTED:
+                    Tile.transform.localScale = Vector3.one * 1.2f;
                     break;
             }
         }

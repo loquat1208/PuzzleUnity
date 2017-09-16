@@ -14,6 +14,13 @@ namespace Puzzle.Play
             D = 3,
             TYPE_MAX = 4,
         }
+
+        public enum STATUS
+        {
+            NORMAL,
+            SELECTED,
+        }
+
         public const int TILE_SIZE = 100;
     }
 }
