@@ -18,6 +18,6 @@ namespace Puzzle.Play
         public IObservable<Text> StageText { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => stageText); } }
         public IObservable<Text> LevelText { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => levelText); } }
         public IObservable<Text> RemainChangeCountText { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => remainChangeCountText); } }
-        public IObservable<long> GameEnd { get { return Observable.EveryUpdate().DistinctUntilChanged().Where(_ => Tiles.isAllSameTile()); } }
+        public IObservable<long> GameClear { get { return Observable.EveryUpdate().DistinctUntilChanged().Where(_ => Tiles.isAllSameTile()); } }
     }
 }
