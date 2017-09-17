@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Puzzle.Play;
+
 namespace Puzzle.Stage
 {
     public class StageModel
@@ -22,6 +24,7 @@ namespace Puzzle.Stage
         public int Index { get; set; }
         public int MaxLevel { get; set; }
 
+        // TODO : 스테이지, 레벨에 대한 데이터 관리 시스템 확립이 필요
         public List<LevelModel> Levels
         {
             get
@@ -30,7 +33,7 @@ namespace Puzzle.Stage
                 {
                     LevelModel level = new LevelModel();
                     level.Index = i + 1;
-					level.Grid = new Vector2 (5, 8);
+                    level.MaxChangeCount = 10;
                     _levels.Add(level);
                 }
                 return _levels;

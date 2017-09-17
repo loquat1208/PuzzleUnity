@@ -14,6 +14,7 @@ namespace Puzzle.Play
         [SerializeField] private TileView Tile;
 
         public Dictionary<int, TileView> Tiles { get { return _tiles; } }
+        public int ChangeCount { get; private set; }
 
         private const int NONE = -1;
         private GameModel GameModel { get { return GameModel.Instance; } }
@@ -38,12 +39,37 @@ namespace Puzzle.Play
                         }
 
                         if (x.Value.Status == TileModel.STATUS.SELECTED)
+                        {
+                            ChangeCount++;
                             AllNextType();
+                        }
 
                         currentIndex = NONE;
                         AllNormal();
                     });
             });
+        }
+
+        private void Init()
+        {
+            Vector2 grid = new Vector2(TilesModel.HERIZONTAL_NUM, TilesModel.VERTICAL_NUM);
+            ChangeCount = 0;
+
+            int maxTile = (int)grid.x * (int)grid.y;
+            for (int i = 0; i < maxTile; i++)
+            {
+                GameObject tile = Instantiate(Tile.gameObject, this.transform) as GameObject;
+                _tiles.Add(i, tile.GetComponent<TileView>());
+            }
+
+            // TODO : 나중에 맵 데이터를 불러서 초기화
+            _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
+            {
+                x.Value.Type = (TileModel.TYPE)Random.Range(0, 3);
+                x.Value.Draw();
+            });
+
+            Destroy(Tile.gameObject);
         }
 
         private void AllNormal()
@@ -106,27 +132,6 @@ namespace Puzzle.Play
                     return true;
             }
             return false;
-        }
-
-        private void Init()
-        {
-            Vector2 grid = new Vector2(TilesModel.HERIZONTAL_NUM, TilesModel.VERTICAL_NUM);
-
-            int maxTile = (int)grid.x * (int)grid.y;
-            for (int i = 0; i < maxTile; i++)
-            {
-                GameObject tile = Instantiate(Tile.gameObject, this.transform) as GameObject;
-                _tiles.Add(i, tile.GetComponent<TileView>());
-            }
-
-            // TODO : 나중에 맵 데이터를 불러서 초기화
-            _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
-            {
-                x.Value.Type = (TileModel.TYPE)Random.Range(0, 3);
-                x.Value.Draw();
-            });
-
-            Destroy(Tile.gameObject);
         }
 
         public bool isAllSameTile()

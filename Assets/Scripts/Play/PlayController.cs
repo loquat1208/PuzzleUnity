@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Puzzle.Game;
+using Puzzle.Stage;
 
 using UniRx;
 
@@ -16,10 +17,14 @@ namespace Puzzle.Play
 
         void Start()
         {
-			view.StageText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Stage {0}", GameModel.Stages[GameModel.CurrentStage].Index));
+            StageModel stage = GameModel.Stages[GameModel.CurrentStage];
+            LevelModel level = stage.Levels[GameModel.CurrentLevel];
+            view.StageText.TakeUntilDestroy(this)
+				.Subscribe( x => x.text = string.Format("Stage {0}", stage.Index));
 			view.LevelText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Level {0}", GameModel.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel].Index));
+				.Subscribe( x => x.text = string.Format("Level {0}", level.Index));
+            view.RemainChangeCountText.TakeUntilDestroy(this)
+                .Subscribe(x => x.text = string.Format("{0}", level.MaxChangeCount - view.Tiles.ChangeCount));
             view.GameEnd.First()
                 .Subscribe(_ => Debug.Log("GameEnd"));
         }
