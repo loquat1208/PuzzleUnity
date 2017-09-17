@@ -23,28 +23,24 @@ namespace Puzzle.Play
         private void Start()
         {
             Init();
-            _tiles.ToObservable().Subscribe(x =>
+            _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
                 x.Value.Tile.OnClickAsObservable().TakeUntilDestroy(this)
                     .Subscribe(_ =>
                     {
-                        if (x.Value.Status == TileModel.STATUS.NORMAL)
+                        if (currentIndex == NONE)
                         {
-                            if (currentIndex == NONE)
-                            {
-                                x.Value.Status = TileModel.STATUS.SELECTED;
-                                currentIndex = x.Key;
-                                x.Value.Draw();
-                            }
-                            else
-                            {
-                                currentIndex = NONE;
-                                AllNormal();
-                            }
+                            currentIndex = x.Key;
+                            x.Value.Status = TileModel.STATUS.SELECTED;
+                            x.Value.Draw();
+                            GroupSelect(currentIndex);
                             return;
                         }
-                        x.Value.Status = TileModel.STATUS.NORMAL;
-                        x.Value.NextType();
+
+                        if (x.Value.Status == TileModel.STATUS.SELECTED)
+                            AllNextType();
+
+                        currentIndex = NONE;
                         AllNormal();
                     });
             });
@@ -52,11 +48,64 @@ namespace Puzzle.Play
 
         private void AllNormal()
         {
-            _tiles.ToObservable().Subscribe(x =>
+            _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
                 x.Value.Status = TileModel.STATUS.NORMAL;
                 x.Value.Draw();
             });
+        }
+
+        private void AllNextType()
+        {
+            _tiles.ToObservable().TakeUntilDestroy(this)
+                .Where(x => x.Value.Status == TileModel.STATUS.SELECTED)
+                .Subscribe(x =>
+                {
+                    x.Value.NextType();
+                });
+        }
+
+        private void GroupSelect(int idx)
+        {
+            for (int i = 0; i < TilesModel.HERIZONTAL_NUM + TilesModel.VERTICAL_NUM; i++)
+            {
+                _tiles.ToObservable().TakeUntilDestroy(this)
+                    .Where(x => x.Value.Type == _tiles[idx].Type)
+                    .Where(x => Check(x.Key))
+                    .Subscribe(x =>
+                    {
+                        x.Value.Status = TileModel.STATUS.SELECTED;
+                        x.Value.Draw();
+                    });
+            }
+        }
+
+        private bool Check(int idx)
+        {
+            if(idx % TilesModel.HERIZONTAL_NUM != TilesModel.HERIZONTAL_NUM - 1)
+            {
+                if(_tiles[idx + 1].Status == TileModel.STATUS.SELECTED)
+                    return true;
+            }
+
+            if (idx % TilesModel.HERIZONTAL_NUM != 0)
+            {
+                if (_tiles[idx - 1].Status == TileModel.STATUS.SELECTED)
+                    return true;
+            }
+
+            if (idx >= TilesModel.HERIZONTAL_NUM)
+            {
+                if (_tiles[idx - TilesModel.HERIZONTAL_NUM].Status == TileModel.STATUS.SELECTED)
+                    return true;
+            }
+
+            if (idx < TilesModel.MAX_NUM - TilesModel.HERIZONTAL_NUM)
+            {
+                if (_tiles[idx + TilesModel.HERIZONTAL_NUM].Status == TileModel.STATUS.SELECTED)
+                    return true;
+            }
+            return false;
         }
 
         private void Init()
@@ -70,7 +119,8 @@ namespace Puzzle.Play
                 _tiles.Add(i, tile.GetComponent<TileView>());
             }
 
-            _tiles.ToObservable().Subscribe(x =>
+            // TODO : 나중에 맵 데이터를 불러서 초기화
+            _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
                 x.Value.Type = (TileModel.TYPE)Random.Range(0, 3);
                 x.Value.Draw();
