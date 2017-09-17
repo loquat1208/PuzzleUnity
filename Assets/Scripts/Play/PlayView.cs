@@ -9,10 +9,12 @@ namespace Puzzle.Play
 {
     public class PlayView : MonoBehaviour
     {
+        [SerializeField] private TilesController Tiles;
         [SerializeField] private Text stageText;
         [SerializeField] private Text levelText;
 
         public IObservable<Text> StageText { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => stageText); } }
         public IObservable<Text> LevelText { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => levelText); } }
+        public IObservable<long> GameEnd { get { return Observable.EveryUpdate().DistinctUntilChanged().Where(_ => Tiles.isAllSameTile()); } }
     }
 }

@@ -128,5 +128,14 @@ namespace Puzzle.Play
 
             Destroy(Tile.gameObject);
         }
+
+        public bool isAllSameTile()
+        {
+            bool result = true;
+            _tiles.ToObservable()
+                .Where(x => x.Value.Type != _tiles[0].Type)
+                .Subscribe(_ => result = false);
+            return result;
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace Puzzle.Play
 				.Subscribe( x => x.text = string.Format("Stage {0}", GameModel.Stages[GameModel.CurrentStage].Index));
 			view.LevelText.TakeUntilDestroy(this)
 				.Subscribe( x => x.text = string.Format("Level {0}", GameModel.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel].Index));
+            view.GameEnd.First()
+                .Subscribe(_ => Debug.Log("GameEnd"));
         }
     }
 }
