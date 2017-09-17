@@ -13,29 +13,49 @@ namespace Puzzle.Play
     {
         [SerializeField] private TileView Tile;
 
-        public List<TileView> Tiles { get { return _tiles; } }
+        public Dictionary<int, TileView> Tiles { get { return _tiles; } }
 
+        private const int NONE = -1;
         private GameModel GameModel { get { return GameModel.Instance; } }
-        private List<TileView> _tiles = new List<TileView>();
+        private Dictionary<int, TileView> _tiles = new Dictionary<int, TileView>();
+        private int currentIndex = NONE;
 
         private void Start()
         {
             Init();
-            _tiles.ForEach(x =>
+            _tiles.ToObservable().Subscribe(x =>
             {
-                x.Tile.OnClickAsObservable().TakeUntilDestroy(this)
-                      .Subscribe(_ =>
-                      {
-                          if (x.Status == TileModel.STATUS.NORMAL)
-                          {
-                              x.Status = TileModel.STATUS.SELECTED;
-                              x.Draw();
-                              return;
-                          }
-                          x.Status = TileModel.STATUS.NORMAL;
-                          x.NextType();
-                          x.Draw();
-                      });
+                x.Value.Tile.OnClickAsObservable().TakeUntilDestroy(this)
+                    .Subscribe(_ =>
+                    {
+                        if (x.Value.Status == TileModel.STATUS.NORMAL)
+                        {
+                            if (currentIndex == NONE)
+                            {
+                                x.Value.Status = TileModel.STATUS.SELECTED;
+                                currentIndex = x.Key;
+                                x.Value.Draw();
+                            }
+                            else
+                            {
+                                currentIndex = NONE;
+                                AllNormal();
+                            }
+                            return;
+                        }
+                        x.Value.Status = TileModel.STATUS.NORMAL;
+                        x.Value.NextType();
+                        AllNormal();
+                    });
+            });
+        }
+
+        private void AllNormal()
+        {
+            _tiles.ToObservable().Subscribe(x =>
+            {
+                x.Value.Status = TileModel.STATUS.NORMAL;
+                x.Value.Draw();
             });
         }
 
@@ -47,13 +67,13 @@ namespace Puzzle.Play
             for (int i = 0; i < maxTile; i++)
             {
                 GameObject tile = Instantiate(Tile.gameObject, this.transform) as GameObject;
-                _tiles.Add(tile.GetComponent<TileView>());
+                _tiles.Add(i, tile.GetComponent<TileView>());
             }
 
-            _tiles.ForEach(x =>
+            _tiles.ToObservable().Subscribe(x =>
             {
-                x.Type = (TileModel.TYPE)Random.Range(0, 3);
-                x.Draw();
+                x.Value.Type = (TileModel.TYPE)Random.Range(0, 3);
+                x.Value.Draw();
             });
 
             Destroy(Tile.gameObject);
