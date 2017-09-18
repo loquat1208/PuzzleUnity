@@ -33,21 +33,17 @@ namespace Puzzle.Play
                         if (currentIndex == NONE)
                         {
 							currentIndex = x.Key;
-							x.Value.Status = TileModel.STATUS.SELECTED;
-							x.Value.Draw();
 							GroupSelect(currentIndex);
 							return;
 						} 
-						else if ( x.Value.Status != TileModel.STATUS.SELECTED)
+						else if (x.Value.Status != TileModel.STATUS.SELECTED)
 						{
 							AllNormal();
 							currentIndex = x.Key;
-							x.Value.Status = TileModel.STATUS.SELECTED;
-							x.Value.Draw();
 							GroupSelect(currentIndex);
 							return;
-						} 
-						
+						}
+
 						if (x.Value.Status == TileModel.STATUS.SELECTED)
                         {
                             ChangeCount++;
@@ -103,11 +99,13 @@ namespace Puzzle.Play
 
         private void GroupSelect(int idx)
         {
+			_tiles[idx].Status = TileModel.STATUS.SELECTED;
+			_tiles[idx].Draw();
             for (int i = 0; i < TilesModel.HERIZONTAL_NUM + TilesModel.VERTICAL_NUM; i++)
             {
                 _tiles.ToObservable().TakeUntilDestroy(this)
                     .Where(x => x.Value.Type == _tiles[idx].Type)
-                    .Where(x => Check(x.Key))
+					.Where(x => CheckClossTile(x.Key))
                     .Subscribe(x =>
                     {
                         x.Value.Status = TileModel.STATUS.SELECTED;
@@ -116,8 +114,9 @@ namespace Puzzle.Play
             }
         }
 
-        private bool Check(int idx)
+        private bool CheckClossTile(int idx)
         {
+			// TODO: 코드 리펙토링
             if(idx % TilesModel.HERIZONTAL_NUM != TilesModel.HERIZONTAL_NUM - 1)
             {
                 if(_tiles[idx + 1].Status == TileModel.STATUS.SELECTED)
