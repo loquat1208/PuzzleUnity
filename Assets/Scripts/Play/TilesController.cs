@@ -29,16 +29,26 @@ namespace Puzzle.Play
                 x.Value.Tile.OnClickAsObservable().TakeUntilDestroy(this)
                     .Subscribe(_ =>
                     {
+						// TODO: 코드 리펙토링
                         if (currentIndex == NONE)
                         {
-                            currentIndex = x.Key;
-                            x.Value.Status = TileModel.STATUS.SELECTED;
-                            x.Value.Draw();
-                            GroupSelect(currentIndex);
-                            return;
-                        }
-
-                        if (x.Value.Status == TileModel.STATUS.SELECTED)
+							currentIndex = x.Key;
+							x.Value.Status = TileModel.STATUS.SELECTED;
+							x.Value.Draw();
+							GroupSelect(currentIndex);
+							return;
+						} 
+						else if ( x.Value.Status != TileModel.STATUS.SELECTED)
+						{
+							AllNormal();
+							currentIndex = x.Key;
+							x.Value.Status = TileModel.STATUS.SELECTED;
+							x.Value.Draw();
+							GroupSelect(currentIndex);
+							return;
+						} 
+						
+						if (x.Value.Status == TileModel.STATUS.SELECTED)
                         {
                             ChangeCount++;
                             AllNextType();
