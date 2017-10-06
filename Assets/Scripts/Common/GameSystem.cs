@@ -8,7 +8,6 @@ namespace Puzzle.System
 {
 	public class GameSystem : MonoBehaviour
 	{
-		// 싱글톤
 		private static GameSystem _instance;
 		public static GameSystem Instance
 		{
