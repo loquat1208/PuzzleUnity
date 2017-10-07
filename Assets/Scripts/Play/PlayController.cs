@@ -30,14 +30,15 @@ namespace Puzzle.Play
 			Observable.EveryUpdate().Where(_ => view.Tiles.isAllSameTile()).First()
 				.Subscribe(_ =>
 					{
-						view.ResultDialog.SetActive(true);
-						view.ResultDialog.GetComponentInChildren<Text>().text = "Game Clear";
+						view.ResultDialog.Draw();
+						view.ResultDialog.SetResultText(true);
 					});
 			Observable.EveryUpdate().Where(_ => level.MaxChangeCount - view.Tiles.ChangeCount <= 0).First()
 				.Subscribe(_ =>
 					{
-						view.ResultDialog.SetActive(true);
-						view.ResultDialog.GetComponentInChildren<Text>().text = "Game Fail";
+						view.ResultDialog.Draw();
+						view.ResultDialog.SetResultText(false);
+						view.ResultDialog.SetNextStageButton(false);
 					});
         }
     }

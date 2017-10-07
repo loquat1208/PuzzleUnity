@@ -13,7 +13,7 @@ namespace Puzzle.Play
     public class PlayView : MonoBehaviour
     {
         public TilesController Tiles;
-		public GameObject ResultDialog;
+		public ResultDialogController ResultDialog;
 
         [SerializeField] private Text stageText;
         [SerializeField] private Text levelText;
