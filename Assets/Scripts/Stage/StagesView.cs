@@ -7,11 +7,10 @@ using UniRx;
 
 namespace Puzzle.Stage
 {
-    public class StageView : MonoBehaviour
+    public class StagesView : MonoBehaviour
     {
         [SerializeField] private Text TitleText;
 
-        public GameObject LevelRoot;
         public IObservable<Text> Title { get { return Observable.EveryUpdate().DistinctUntilChanged().Select(_ => TitleText); } }
     }
 }

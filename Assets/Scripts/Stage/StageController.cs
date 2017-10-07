@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle.System;
 using Puzzle.Game;
 
 using UniRx;
@@ -11,13 +10,16 @@ namespace Puzzle.Stage
 {
     public class StageController : MonoBehaviour
     {
-        [SerializeField] private StageView View;
-
-        private GameModel GameModel { get { return GameModel.Instance; } }
+        private StageModel _stage = new StageModel();
+   
+        public StageModel Stage { get { return _stage; } }
+        public int Index = 1;
+		public List<LevelModel> Levels = new List<LevelModel>();
 
         private void Start()
         {
-            View.Title.TakeUntilDestroy(this).Subscribe(x => x.text = string.Format("Stage {0}", GameModel.Stage) );
+            _stage.Index = Index;
+			_stage.MaxLevel = Levels.Count;
         }
     }
 }

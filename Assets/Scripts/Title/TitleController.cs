@@ -18,7 +18,7 @@ namespace Puzzle.Title
 
 		void Start()
 		{
-			View.OnTap.Subscribe(_ => GameSystem.Scene.LoadScene("MainMenu"));
+			View.OnTap.TakeUntilDestroy(this).Subscribe(_ => GameSystem.Scene.LoadScene("MainMenu"));
 		}
 	}
 }
