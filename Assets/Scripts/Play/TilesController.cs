@@ -60,7 +60,7 @@ namespace Puzzle.Play
 
         private void Init()
         {
-            LevelModel level = GameModel.Stages.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel];
+            LevelModel level = GameModel.StageData.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel];
             Vector2 grid = level.Grid;
             ChangeCount = 0;
 

@@ -18,7 +18,7 @@ namespace Puzzle.Play
 
         void Start()
         {
-			StageModel stage = GameModel.Stages.Stages[GameModel.CurrentStage];
+			StageModel stage = GameModel.StageData.Stages[GameModel.CurrentStage];
             LevelModel level = stage.Levels[GameModel.CurrentLevel];
 
             view.StageText.TakeUntilDestroy(this)
