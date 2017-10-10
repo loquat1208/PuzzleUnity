@@ -18,12 +18,13 @@ namespace Puzzle.Play
 
         void Start()
         {
-			StageModel stage = GameModel.Stages[GameModel.CurrentStage];
-			LevelModel level = stage.Levels[GameModel.CurrentLevel];
-			view.StageText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Stage {0}", stage.Index));
+			StageModel stage = GameModel.Stages.Stages[GameModel.CurrentStage];
+            LevelModel level = stage.Levels[GameModel.CurrentLevel];
+
+            view.StageText.TakeUntilDestroy(this)
+				.Subscribe( x => x.text = string.Format("Stage {0}", GameModel.CurrentStage + 1));
 			view.LevelText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Level {0}", level.Index));
+				.Subscribe( x => x.text = string.Format("Level {0}", GameModel.CurrentLevel + 1));
 			view.RemainChangeCountText.TakeUntilDestroy(this)
 				.Subscribe(x => x.text = string.Format("{0}", level.MaxChangeCount - view.Tiles.ChangeCount));
 

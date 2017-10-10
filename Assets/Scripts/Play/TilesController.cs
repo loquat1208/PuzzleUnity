@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 using UniRx;
 
 using Puzzle.Game;
+using Puzzle.Stage;
 
 namespace Puzzle.Play
 {
@@ -58,7 +60,8 @@ namespace Puzzle.Play
 
         private void Init()
         {
-            Vector2 grid = new Vector2(TilesModel.HERIZONTAL_NUM, TilesModel.VERTICAL_NUM);
+            LevelModel level = GameModel.Stages.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel];
+            Vector2 grid = level.Grid;
             ChangeCount = 0;
 
             int maxTile = (int)grid.x * (int)grid.y;
@@ -68,10 +71,11 @@ namespace Puzzle.Play
                 _tiles.Add(i, tile.GetComponent<TileView>());
             }
 
+
             // TODO : 나중에 맵 데이터를 불러서 초기화
             _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
-                x.Value.Type = (TileModel.TYPE)Random.Range(0, 3);
+                x.Value.Type = (TileModel.TYPE)level.Tiles[x.Key];
                 x.Value.Draw();
             });
 
