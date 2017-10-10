@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Puzzle.Game;
+using Puzzle.System;
 using Puzzle.Stage;
 
 using UniRx;
@@ -41,6 +42,12 @@ namespace Puzzle.Play
 						view.ResultDialog.SetResultText(false);
 						view.ResultDialog.SetNextStageButton(false);
 					});
+
+            // TODO: 전 씬을 저장해서 전의 씬으로 넘어가게 수정
+            Observable.EveryUpdate()
+                .Where(_ => Application.platform == RuntimePlatform.Android)
+                .Where(_ => Input.GetKey(KeyCode.Escape))
+                .Subscribe(_ => GameSystem.Instance.Scene.LoadScene("Stage"));
         }
     }
 }
