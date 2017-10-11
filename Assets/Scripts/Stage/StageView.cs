@@ -25,6 +25,8 @@ namespace Puzzle.Stage
                 _levelButton.GetComponentInChildren<Text>().text = levelNum.ToString();
                 LevelButton.Add(_levelButton.GetComponent<Button>());
             }
+
+            Destroy(levelButton.gameObject);
         }
     }
 }
