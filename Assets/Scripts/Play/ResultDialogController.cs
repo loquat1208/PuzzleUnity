@@ -25,8 +25,10 @@ namespace Puzzle.Play
 		public void SetResultText(bool isClear)
 		{
 			view.ResultText.text = isClear ? "GAME CLEAR" : "GAME FAIL";
-			view.NextStageButton.image.color = new Color32(125, 125, 125, 255);
-		}
+            view.ResultText.color = isClear ? Color.black : Color.red;
+            view.NextStageButton.image.color = new Color32(125, 125, 125, 255);
+			view.RetryButton.image.color = new Color32(125, 125, 125, 255);
+        }
 
 		void Start()
 		{
