@@ -35,7 +35,7 @@ namespace Puzzle.Play
 						view.ResultDialog.Draw();
 						view.ResultDialog.SetResultText(true);
 					});
-			Observable.EveryUpdate().Where(_ => level.MaxChangeCount - view.Tiles.ChangeCount <= 0).First()
+			Observable.EveryUpdate().Where(_ => level.MaxChangeCount - view.Tiles.ChangeCount < 0).First()
 				.Subscribe(_ =>
 					{
 						view.ResultDialog.Draw();
@@ -45,8 +45,9 @@ namespace Puzzle.Play
 
             // TODO: 전 씬을 저장해서 전의 씬으로 넘어가게 수정
             Observable.EveryUpdate()
-                .Where(_ => Application.platform == RuntimePlatform.Android)
+                //.Where(_ => Application.platform == RuntimePlatform.Android)
                 .Where(_ => Input.GetKey(KeyCode.Escape))
+                .First()
                 .Subscribe(_ => GameSystem.Instance.Scene.LoadScene("Stage"));
         }
     }
