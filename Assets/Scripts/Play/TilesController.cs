@@ -70,9 +70,7 @@ namespace Puzzle.Play
                 GameObject tile = Instantiate(Tile.gameObject, this.transform) as GameObject;
                 _tiles.Add(i, tile.GetComponent<TileView>());
             }
-
-
-            // TODO : 나중에 맵 데이터를 불러서 초기화
+				
             _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
                 x.Value.Type = (TileModel.TYPE)level.Tiles[x.Key];
@@ -103,9 +101,10 @@ namespace Puzzle.Play
 
         private void GroupSelect(int idx)
         {
+			LevelModel level = GameModel.StageData.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel];
 			_tiles[idx].Status = TileModel.STATUS.SELECTED;
 			_tiles[idx].Draw();
-            for (int i = 0; i < TilesModel.HERIZONTAL_NUM + TilesModel.VERTICAL_NUM; i++)
+			for (int i = 0; i < level.Grid.x + level.Grid.y; i++)
             {
                 _tiles.ToObservable().TakeUntilDestroy(this)
                     .Where(x => x.Value.Type == _tiles[idx].Type)
@@ -120,28 +119,32 @@ namespace Puzzle.Play
 
         private bool CheckClossTile(int idx)
         {
+			LevelModel level = GameModel.StageData.Stages[GameModel.CurrentStage].Levels[GameModel.CurrentLevel];
+			int horizontal = (int)level.Grid.x;
+			int vertical = (int)level.Grid.y;
+
 			// TODO: 코드 리펙토링
-            if(idx % TilesModel.HERIZONTAL_NUM != TilesModel.HERIZONTAL_NUM - 1)
+			if(idx % horizontal != horizontal - 1)
             {
                 if(_tiles[idx + 1].Status == TileModel.STATUS.SELECTED)
                     return true;
             }
 
-            if (idx % TilesModel.HERIZONTAL_NUM != 0)
+			if (idx % horizontal != 0)
             {
                 if (_tiles[idx - 1].Status == TileModel.STATUS.SELECTED)
                     return true;
             }
 
-            if (idx >= TilesModel.HERIZONTAL_NUM)
+			if (idx >= horizontal)
             {
-                if (_tiles[idx - TilesModel.HERIZONTAL_NUM].Status == TileModel.STATUS.SELECTED)
+				if (_tiles[idx - horizontal].Status == TileModel.STATUS.SELECTED)
                     return true;
             }
 
-            if (idx < TilesModel.MAX_NUM - TilesModel.HERIZONTAL_NUM)
+			if (idx < horizontal * vertical - horizontal)
             {
-                if (_tiles[idx + TilesModel.HERIZONTAL_NUM].Status == TileModel.STATUS.SELECTED)
+				if (_tiles[idx + horizontal].Status == TileModel.STATUS.SELECTED)
                     return true;
             }
             return false;

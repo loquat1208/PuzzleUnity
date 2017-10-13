@@ -167,7 +167,7 @@ public class StageData
             ),
             new LevelModel
             (
-                17,
+                15,
                 new int[]
                 {
                     2,0,3,0,2,0,2,
