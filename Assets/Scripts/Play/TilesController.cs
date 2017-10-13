@@ -70,9 +70,7 @@ namespace Puzzle.Play
                 GameObject tile = Instantiate(Tile.gameObject, this.transform) as GameObject;
                 _tiles.Add(i, tile.GetComponent<TileView>());
             }
-
-
-            // TODO : 나중에 맵 데이터를 불러서 초기화
+				
             _tiles.ToObservable().TakeUntilDestroy(this).Subscribe(x =>
             {
                 x.Value.Type = (TileModel.TYPE)level.Tiles[x.Key];

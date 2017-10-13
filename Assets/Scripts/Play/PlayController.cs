@@ -19,29 +19,11 @@ namespace Puzzle.Play
 
         void Start()
         {
-			StageModel stage = GameModel.StageData.Stages[GameModel.CurrentStage];
-            LevelModel level = stage.Levels[GameModel.CurrentLevel];
+			view.Draw(GameModel);
 
-            view.StageText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Stage {0}", GameModel.CurrentStage + 1));
-			view.LevelText.TakeUntilDestroy(this)
-				.Subscribe( x => x.text = string.Format("Level {0}", GameModel.CurrentLevel + 1));
-			view.RemainChangeCountText.TakeUntilDestroy(this)
-				.Subscribe(x => x.text = string.Format("{0}", level.MaxChangeCount - view.Tiles.ChangeCount));
-
-			Observable.EveryUpdate().Where(_ => view.Tiles.isAllSameTile()).First()
-				.Subscribe(_ =>
-					{
-						view.ResultDialog.Draw();
-						view.ResultDialog.SetResultText(true);
-					});
-			Observable.EveryUpdate().Where(_ => level.MaxChangeCount - view.Tiles.ChangeCount < 0).First()
-				.Subscribe(_ =>
-					{
-						view.ResultDialog.Draw();
-						view.ResultDialog.SetResultText(false);
-						view.ResultDialog.SetNextStageButton(false);
-					});
+			view.TilesController.Tiles.ToObservable()
+				.Subscribe(x => x.Value.OnTile.Subscribe(_ => UpdatePlay()))
+				.AddTo (this);
 
             // TODO: 전 씬을 저장해서 전의 씬으로 넘어가게 수정
             Observable.EveryUpdate()
@@ -50,5 +32,19 @@ namespace Puzzle.Play
                 .First()
                 .Subscribe(_ => GameSystem.Instance.Scene.LoadScene("Stage"));
         }
+
+		private void UpdatePlay()
+		{
+			if (view.TilesController.isAllSameTile ())
+				view.CreateResultDialog (true);
+
+			StageModel stage = GameModel.StageData.Stages [GameModel.CurrentStage];
+			LevelModel level = stage.Levels [GameModel.CurrentLevel];
+			if (level.MaxChangeCount - view.TilesController.ChangeCount < 0) {
+				view.CreateResultDialog (false);
+			}
+
+			view.Draw (GameModel);
+		}
     }
 }

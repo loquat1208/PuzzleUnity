@@ -12,15 +12,29 @@ namespace Puzzle.Play
 {
     public class PlayView : MonoBehaviour
     {
-        public TilesController Tiles;
+        public TilesController TilesController;
 		public ResultDialogController ResultDialog;
 
-        [SerializeField] private Text stageText;
-        [SerializeField] private Text levelText;
+		[SerializeField] private Text stageText;
+		[SerializeField] private Text levelText;
 		[SerializeField] private Text remainChangeCountText;
 
-        public IObservable<Text> StageText { get { return Observable.EveryUpdate().Select(_ => stageText); } }
-        public IObservable<Text> LevelText { get { return Observable.EveryUpdate().Select(_ => levelText); } }
-        public IObservable<Text> RemainChangeCountText { get { return Observable.EveryUpdate().Select(_ => remainChangeCountText); } }
+		public void Draw(GameModel gameModel)
+		{
+			stageText.text = string.Format("Stage {0}", gameModel.CurrentStage + 1);
+			levelText.text = string.Format("Level {0}", gameModel.CurrentLevel + 1);
+
+			StageModel stage = gameModel.StageData.Stages[gameModel.CurrentStage];
+			LevelModel level = stage.Levels[gameModel.CurrentLevel];
+
+			remainChangeCountText.text = string.Format("{0}", level.MaxChangeCount - TilesController.ChangeCount);
+		}
+
+		public void CreateResultDialog(bool isClear)
+		{
+			ResultDialog.Draw();
+			ResultDialog.SetResultText(isClear);
+			ResultDialog.SetNextStageButton(isClear);
+		}
     }
 }

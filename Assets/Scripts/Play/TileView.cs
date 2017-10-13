@@ -18,6 +18,8 @@ namespace Puzzle.Play
         public TileModel.TYPE Type { get; set; }
         public TileModel.STATUS Status { get; set; }
 
+		public IObservable<Unit> OnTile { get { return Tile.OnClickAsObservable (); } }
+
         public void NextType()
         {
             Type++;
