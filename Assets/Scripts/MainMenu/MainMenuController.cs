@@ -14,16 +14,16 @@ namespace Puzzle.MainMenu
 		// 사실은 버튼은 View를 만들어 관리하는게 좋음
 		[SerializeField] private Button StageButton;
 		[SerializeField] private Button ShopButton;
-		[SerializeField] private Button CreateButton;
-		[SerializeField] private Button OptionButton;
+        [SerializeField] private Button OptionButton;
+        [SerializeField] private Button HomeButton;
 
 		private GameSystem GameSystem { get { return GameSystem.Instance; } }
 
 		void Start() {
 			StageButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnStage());
 			ShopButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnShop());
-			CreateButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnCreate());
-			OptionButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnOption());
+            OptionButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnOption());
+            HomeButton.OnClickAsObservable().TakeUntilDestroy(this).Subscribe(_ => OnHome());
 		}
 	
 		private void OnStage()
@@ -36,14 +36,14 @@ namespace Puzzle.MainMenu
 			GameSystem.Message.CreateMessage("Dont Created");
 		}
 
-		private void OnCreate()
-		{
-			GameSystem.Message.CreateMessage("Dont Created");
-		}
-
-		private void OnOption()
-		{
-			GameSystem.Message.CreateMessage("Dont Created");
-		}
+        private void OnOption()
+        {
+            GameSystem.Message.CreateMessage("Dont Created");
+        }
+        
+        private void OnHome()
+        {
+            GameSystem.Scene.LoadScene("Title");
+        }
 	}
 }
